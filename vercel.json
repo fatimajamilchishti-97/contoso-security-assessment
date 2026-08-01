@@ -1,22 +1,12 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/", "destination": "/public/index.html" },
     { "source": "/dashboard", "destination": "/public/dashboard.html" },
-    { "source": "/api/(.*)", "destination": "/server.js?apiName=$1" },
-    { "source": "/mobile-risks", "destination": "/server.js?apiName=mobile-risks" },
-    { "source": "/infrastructure", "destination": "/server.js?apiName=infrastructure" },
-    { "source": "/css/(.*)", "destination": "/public/css/$1" },
-    { "source": "/js/(.*)", "destination": "/public/js/$1" }
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/mobile-risks", "destination": "/api/mobile-risks" },
+    { "source": "/infrastructure", "destination": "/api/infrastructure" },
+    { "source": "/(.*)", "destination": "/public/$1" }
   ]
 }
