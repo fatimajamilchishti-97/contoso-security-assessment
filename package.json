@@ -1,0 +1,13 @@
+{
+  "name": "contoso-security-assessment",
+  "version": "2.0.0",
+  "description": "Contoso Security Assessment — single-project site with serverless-style API, zero dependencies",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "ISC"
+}
