@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contoso Security Assessment Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+<!-- Add this exact style block right here -->
+    <style>
+      h1, h2, h3, h4, h5, h6, .section-title, .incident-overview, strong {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+          font-weight: 800 !important;
+          color: #000000 !important;
+      }
+    </style>
+</head>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-topbar">
+    <div class="brand">
+      <div class="ms-logo-grid">
+        <span class="r"></span><span class="g"></span><span class="b"></span><span class="y"></span>
+      </div>
+      Contoso Security Assessment
+    </div>
+    <div class="spacer"></div>
+    <div class="user-chip">
+      <div class="avatar" id="userAvatar">A</div>
+      <span id="userName">admin</span>
+    </div>
+    <button class="logout-btn" id="logoutBtn">Sign out</button>
+  </div>
+
+  <nav class="sidebar" id="sidebar"><!-- built dynamically by app.js --></nav>
+
+  <main class="content" id="content">
+    <div class="loading">Loading…</div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
