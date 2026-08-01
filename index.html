@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in | Contoso Security Assessment</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="login-shell">
+  <div class="login-topbar">
+    <div class="ms-logo-grid">
+      <span class="r"></span><span class="g"></span><span class="b"></span><span class="y"></span>
+    </div>
+    <span class="brand-text">Contoso Security Assessment</span>
+  </div>
+
+  <div class="login-main">
+    <div class="login-card">
+      <h1>Sign in</h1>
+      <p class="subtitle">Access the IT & cybersecurity assessment dashboard</p>
+
+      <div id="loginError" class="login-error" style="display:none;"></div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" type="text" autocomplete="username" value="admin" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" required>
+        </div>
+        <div class="field" id="mfaField">
+          <label for="mfaCode">Verification code (MFA)</label>
+          <input id="mfaCode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit code, e.g. 123456">
+          <div class="hint">Any 6-digit code works in this preview.</div>
+        </div>
+        <div class="login-actions">
+          <button type="submit" class="btn-primary" id="submitBtn">Sign in</button>
+        </div>
+      </form>
+
+      <div class="demo-hint">
+        <strong>Demo credentials</strong> — username <code>admin</code>, password <code>Admin@2026</code>.
+        This login enforces a salted &amp; hashed password check plus multi-factor authentication,
+        matching the MFA control described in the incident-response plan.
+      </div>
+    </div>
+  </div>
+
+  <div class="login-footer">© 2026 Contoso Corporation · Security Operations · Internal use only</div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  const form = document.getElementById('loginForm');
+  const errorBox = document.getElementById('loginError');
+  const mfaField = document.getElementById('mfaField');
+  const submitBtn = document.getElementById('submitBtn');
+  let mfaRequired = false;
+
+  function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.style.display = 'block';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBox.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Signing in…';
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const mfaCode = document.getElementById('mfaCode').value.trim();
+
+    try {
+      const result = await Api.login(username, password, mfaCode);
+      if (result.mfaRequired) {
+        mfaRequired = true;
+        mfaField.style.display = 'block';
+        showError(result.error);
+      } else if (result.token) {
+        localStorage.setItem('contoso_token', result.token);
+        localStorage.setItem('contoso_user', JSON.stringify({ username: result.username, role: result.role }));
+        window.location.href = 'dashboard.html';
+      } else {
+        showError(result.error || 'Sign-in failed.');
+      }
+    } catch (err) {
+      showError('Could not reach the API. If running locally, make sure "node server.js" is running. If deployed, check the Vercel deployment logs for the /api functions.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Sign in';
+    }
+  });
+</script>
+</body>
+</html>
